@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+
+
+
+    <!--声明组件扫描器-->
+    <context:component-scan base-package="com.reiuy.controller"/>
+
+    <!--声明视图解析器,可以帮助开发人员去设置视图文件的路径-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!--前缀prefix是视图文件的路径-->
+        <property name="prefix" value="/WEB-INF/view/"/>
+        <!--后缀suffix是视图文件的扩展名-->
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+
+</beans>
+
