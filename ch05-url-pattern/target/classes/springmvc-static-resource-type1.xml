@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+
+
+
+    <!--声明组件扫描器-->
+    <context:component-scan base-package="com.reiuy.controller"/>
+
+    <!--声明视图解析器,可以帮助开发人员去设置视图文件的路径-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!--前缀prefix是视图文件的路径-->
+        <property name="prefix" value="/WEB-INF/view/"/>
+        <!--后缀suffix是视图文件的扩展名-->
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!--加入注解驱动,注意选结尾是mvc的那个-->
+    <mvc:annotation-driven/>
+
+    <!--第一种处理静态资源的方式
+        需要在springmvc配置文件加入<mvc:default-servlet-handler>
+        原理是: 加入这个标签后
+              框架会创建一个控制器对象DefaultServletHttpRequestHandler
+              类似于我们自己创建的Controller
+              这个对象可以把收到的请求转发给tomcat的defaultServlet让他干活
+    -->
+    <mvc:default-servlet-handler/>
+    <!--
+    但是,default-servlet-handler和@RequestMapping存在冲突
+    必须需要加入注解请求才能解决,如果不加入,则会导致其会把所有的请求
+    都交给tomcat中的DefaultServlet进行处理,而DefaultServlet显然没有这个能力
+    故default-servlet-handler和注解驱动必须共存
+    -->
+
+
+</beans>
+
