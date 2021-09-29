@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--这里是spring的配置文件,声明service,dao,工具类等对象-->
+
+
+    <!--声明配置文件的位置-->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+    <!--声明数据源,连接数据库-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+          init-method="init" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.user}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="maxActive" value="20"/>
+    </bean>
+
+    <!--声明sqlSessionFactory,创建sqlSessionFactory-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:mybatis.xml"/>
+    </bean>
+
+    <!--声明mybatis的扫描器,用来创建dao对象-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--指定SqlSessionFactory对象的id-->
+        <!--相当于创建了sqlSession-->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <!--指定一个包名,包名是dao接口所在的包名,多个包可以使用逗号分开-->
+        <!--MapperScannerConfigurer会扫描这个包中所有的接口
+        并全部执行一次getMapper方法
+        得到每个接口的dao对象,创建好的dao对象是在spring容器中的
+        -->
+        <property name="basePackage" value="com.reiuy.dao"/>
+    </bean>
+
+    <!--声明sevice的注解@Servcie所在的包名位置-->
+    <context:component-scan base-package="com.reiuy.service"/>
+
+    <!--事务配置,注解或aspectj-->
+    <!--关于事务的配置,一般是在项目的各个功能测试结束后来配置的-->
+
+
+</beans>
